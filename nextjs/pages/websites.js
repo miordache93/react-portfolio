@@ -1,17 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import Link from '../src/Link';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconButton from '@material-ui/core/IconButton';
-import backArrow from '../assets/backArrow.svg';
-import forwardArrow from '../assets/forwardArrow.svg';
 import Hidden from '@material-ui/core/Hidden';
-import analytics from '../assets/analytics.svg';
-import seo from '../assets/seo.svg';
-import outreach from '../assets/outreach.svg';
-import ecommerce from '../assets/ecommerce.svg';
 
 import CallToAction from '../src/ui/CallToAction';
 
@@ -58,10 +52,10 @@ function Websites(props) {
             style={{ marginRight: '1em', marginLeft: '-3.5em' }}>
             <IconButton
               component={Link}
-              to="/mobileapps"
+              href="/mobileapps"
               onClick={() => props.setSelectedIndex(2)}
               style={{ backgroundColor: 'transparent' }}>
-              <img src={backArrow} alt="Back to the iOS/Android Development Page" />
+              <img src="/assets/backArrow.svg" alt="Back to the iOS/Android Development Page" />
             </IconButton>
           </Grid>
         </Hidden>
@@ -90,9 +84,9 @@ function Websites(props) {
             <IconButton
               component={Link}
               onClick={() => props.setSelectedIndex(0)}
-              to="/services"
+              href="/services"
               style={{ backgroundColor: 'transparent' }}>
-              <img src={forwardArrow} alt="Forward to Services Page" />
+              <img src="/assets/forwardArrow.svg" alt="Forward to Services Page" />
             </IconButton>
           </Grid>
         </Hidden>
@@ -112,7 +106,7 @@ function Websites(props) {
             <Grid item>
               <img
                 style={{ marginLeft: '-2.75em' }}
-                src={analytics}
+                src="/assets/analytics.svg"
                 alt="graph with magnifying glass revealing 1's and 0's" />
             </Grid>
           </Grid>
@@ -140,7 +134,7 @@ function Websites(props) {
             </Grid>
             <Grid item>
               <img
-                src={ecommerce}
+                src="/assets/ecommerce.svg"
                 alt="world outlined made of dollar signs" />
             </Grid>
           </Grid>
@@ -168,7 +162,7 @@ function Websites(props) {
             </Grid>
             <Grid item>
               <img
-                src={outreach}
+                src="/assets/outreach.svg"
                 alt="megaphone" />
             </Grid>
           </Grid>
@@ -198,7 +192,7 @@ function Websites(props) {
             </Grid>
             <Grid item>
               <img
-                src={seo}
+                src="/assets/seo.svg"
                 alt="website standing on winner's podium" />
             </Grid>
           </Grid>

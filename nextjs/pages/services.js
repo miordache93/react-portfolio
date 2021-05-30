@@ -1,14 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import Link  from '../src/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import mobileAppsIcon from '../assets/mobileIcon.svg';
-import websitesIcon from '../assets/websiteIcon.svg';
-import customSoftwareIcon from '../assets/Custom Software Icon.svg';
-import ButtonArrow from './ui/ButtonArrow';
+import ButtonArrow from '../src/ui/ButtonArrow';
 
 const useStyles = makeStyles(theme => ({
   specialText: {
@@ -76,13 +73,13 @@ function Services(props) {
                 app {matchesSM ? null: <br/>} with either mobile platform.
                 
               </Typography>
-              <Button onClick={() => {props.setValue(1); props.setSelectedIndex(2)}} component={Link} to='/mobileapps' variant="outlined" className={classes.learnButton}>
+              <Button onClick={() => {props.setValue(1); props.setSelectedIndex(2)}} component={Link} href='/mobileapps' variant="outlined" className={classes.learnButton}>
                 <span style={{marginRight: 10}}>Learn more </span> 
                 <ButtonArrow width={10} height={10} fill={theme.palette.common.blue}></ButtonArrow>
               </Button>
             </Grid>
             <Grid item style={{marginRight: matchesSM ? 0: '5em'}}>
-              <img  width="250em" className={classes.icon} alt="mobile phone icon" src={mobileAppsIcon} />
+              <img  width="250em" className={classes.icon} alt="mobile phone icon" src="/assets/mobileIcon.svg" />
             </Grid>
         </Grid>
       </Grid>
@@ -100,13 +97,13 @@ function Services(props) {
                 Complete digital solutions, from insetigation to {" "}
                 <span className={classes.specialText}> celebration. </span>
               </Typography>
-              <Button onClick={() => {props.setValue(1); props.setSelectedIndex(1)}} component={Link} to='/custom-software' variant="outlined" className={classes.learnButton}>
+              <Button onClick={() => {props.setValue(1); props.setSelectedIndex(1)}} component={Link} href='/custom-software' variant="outlined" className={classes.learnButton}>
                 <span style={{marginRight: 10}}>Learn more </span> 
                 <ButtonArrow width={10} height={10} fill={theme.palette.common.blue}></ButtonArrow>
               </Button>
             </Grid>
             <Grid item>
-              <img className={classes.icon} alt="custom software icon" src={customSoftwareIcon} />
+              <img className={classes.icon} alt="custom software icon" src="/assets/customSoftware.svg"/>
             </Grid>
         </Grid>
       </Grid>
@@ -129,13 +126,13 @@ function Services(props) {
               <Typography variant="subtitle1">
                 Optimized for Search Engines, built for speed.
               </Typography>
-              <Button onClick={() => {props.setValue(1); props.setSelectedIndex(3)}}  component={Link} to='/websites' variant="outlined" className={classes.learnButton}>
+              <Button onClick={() => {props.setValue(1); props.setSelectedIndex(3)}}  component={Link} href='/websites' variant="outlined" className={classes.learnButton}>
                 <span style={{marginRight: 10}}>Learn more </span> 
                 <ButtonArrow width={10} height={10} fill={theme.palette.common.blue}></ButtonArrow>
               </Button>
             </Grid>
             <Grid item style={{marginRight: matchesSM ? 0 : '5em' }}>
-              <img width="250em" className={classes.icon} alt="website icon" src={websitesIcon} />
+              <img width="250em" className={classes.icon} alt="website icon" src="/assets/websitesIcon.svg" />
             </Grid>
         </Grid>
       </Grid>

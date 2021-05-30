@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import ReactGA from "react-ga";
+import Head from "next/head";
 import axios from "axios";
-import Link from '../src/Link';
+import Link from "../src/Link";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -16,14 +18,14 @@ import ButtonArrow from "../src/ui/ButtonArrow";
 
 const useStyles = makeStyles(theme => ({
   background: {
-    backgroundImage: url('/assets/background.jpg'),
+    backgroundImage: `url("/assets/background.jpg")`,
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     height: "60em",
     paddingBottom: "10em",
     [theme.breakpoints.down("md")]: {
-      backgroundImage: url('/assets/mobileBackground.jpg')
+      backgroundImage: `url("/assets/mobileBackground.jpg")`
     }
   },
   estimateButton: {
@@ -92,10 +94,14 @@ export default function Contact(props) {
   const [message, setMessage] = useState("");
 
   const [open, setOpen] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
-  const [alert, setAlert] = useState({ open: false, color: "" });
-  const [alertMessage, setAlertMesssage] = useState("");
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    backgroundColor: ""
+  });
 
   const onChange = event => {
     let valid;
@@ -132,14 +138,18 @@ export default function Contact(props) {
 
   const onConfirm = () => {
     setLoading(true);
+    ReactGA.event({
+      category: "Message",
+      action: "Sent Message"
+    });
 
     axios
       .get(
-        "https://us-central1-material-ui-portfolio-b9452.cloudfunctions.net/sendMail",
+        "https://us-central1-material-ui-course-951d5.cloudfunctions.net/sendMail",
         {
           params: {
-            email: email,
             name: name,
+            email: email,
             phone: phone,
             message: message
           }
@@ -152,26 +162,54 @@ export default function Contact(props) {
         setEmail("");
         setPhone("");
         setMessage("");
-        setAlert({ open: true, color: "#4BB543" });
-        setAlertMesssage("Message sent successfully!");
+        setAlert({
+          open: true,
+          message: "Message sent successfully!",
+          backgroundColor: "#4BB543"
+        });
       })
       .catch(err => {
         setLoading(false);
-        setAlert({ open: true, color: "#FF3232" });
-        setAlertMesssage("Something went wrong! Please try again.");
-        console.error(err);
+        setAlert({
+          open: true,
+          message: "Something went wrong, please try again!",
+          backgroundColor: "#FF3232"
+        });
       });
   };
 
   const buttonContents = (
     <React.Fragment>
       Send Message
-      <img src="/assets/send.svg" alt="paper airplane" style={{ marginLeft: "1em" }} />
+      <img
+        src="/assets/send.svg"
+        alt="paper airplane"
+        style={{ marginLeft: "1em" }}
+      />
     </React.Fragment>
   );
 
   return (
     <Grid container direction="row">
+      <Head>
+        <title key="title">Contact Us | Arc Development</title>
+        <meta
+          name="description"
+          key="description"
+          content="Let us guide you through the custom software design and development process. Send us a message with any of your ideas or questions to get started!"
+        />
+        <meta
+          property="og:title"
+          content="Bringing West Coast Technology to the Midwest | Contact Us"
+          key="og:title"
+        />
+        <meta property="og:url" key="og:url" content="arc.com/contact" />
+        <link
+          rel="canonical"
+          key="canonical"
+          href="https://arc.com/contact.js"
+        />
+      </Head>
       <Grid
         item
         container
@@ -190,7 +228,7 @@ export default function Contact(props) {
             <Grid item>
               <Typography
                 align={matchesMD ? "center" : undefined}
-                variant="h2"
+                variant="h1"
                 style={{ lineHeight: 1 }}
               >
                 Contact Us
@@ -228,7 +266,7 @@ export default function Contact(props) {
             <Grid item container style={{ marginBottom: "2em" }}>
               <Grid item>
                 <img
-                  src="/assets/emailIcon.svg"
+                  src="/assets/email.svg"
                   alt="envelope"
                   style={{ marginRight: "0.5em", verticalAlign: "bottom" }}
                 />
@@ -286,6 +324,7 @@ export default function Contact(props) {
                 value={message}
                 className={classes.message}
                 multiline
+                placeholder="Tell us more about your project"
                 fullWidth
                 rows={10}
                 id="message"
@@ -298,7 +337,9 @@ export default function Contact(props) {
                   name.length === 0 ||
                   message.length === 0 ||
                   phoneHelper.length !== 0 ||
-                  emailHelper.length !== 0
+                  emailHelper.length !== 0 ||
+                  email.length === 0 ||
+                  phone.length === 0
                 }
                 variant="contained"
                 className={classes.sendButton}
@@ -322,17 +363,17 @@ export default function Contact(props) {
             paddingLeft: matchesXS
               ? 0
               : matchesSM
-              ? 0
-              : matchesMD
-              ? "15em"
-              : "25em",
+                ? "5em"
+                : matchesMD
+                  ? "15em"
+                  : "25em",
             paddingRight: matchesXS
               ? 0
               : matchesSM
-              ? 0
-              : matchesMD
-              ? "15em"
-              : "25em"
+                ? "5em"
+                : matchesMD
+                  ? "15em"
+                  : "25em"
           }
         }}
       >
@@ -409,7 +450,9 @@ export default function Contact(props) {
                   name.length === 0 ||
                   message.length === 0 ||
                   phoneHelper.length !== 0 ||
-                  emailHelper.length !== 0
+                  emailHelper.length !== 0 ||
+                  email.length === 0 ||
+                  phone.length === 0
                 }
                 variant="contained"
                 className={classes.sendButton}
@@ -423,15 +466,11 @@ export default function Contact(props) {
       </Dialog>
       <Snackbar
         open={alert.open}
-        ContentProps={{
-          style: {
-            backgroundColor: alert.color
-          }
-        }}
+        message={alert.message}
+        ContentProps={{ style: { backgroundColor: alert.backgroundColor } }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        message={alertMessage}
+        onClose={() => setAlert({ ...alert, open: false })}
         autoHideDuration={4000}
-        onClose={() => setAlert(false)}
       />
       <Grid
         item
@@ -452,7 +491,7 @@ export default function Contact(props) {
         >
           <Grid container direction="column">
             <Grid item>
-              <Typography align={matchesMD ? "center" : undefined} variant="h2">
+              <Typography align={matchesMD ? "center" : undefined} variant="h1">
                 Simple Software.
                 <br />
                 Revolutionary Results.
@@ -489,7 +528,13 @@ export default function Contact(props) {
             href="/estimate"
             variant="contained"
             className={classes.estimateButton}
-            onClick={() => props.setValue(5)}
+            onClick={() => {
+              props.setValue(5);
+              ReactGA.event({
+                category: "Estimate",
+                action: "Contact Page Pressed"
+              });
+            }}
           >
             Free Estimate
           </Button>
